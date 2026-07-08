@@ -8,7 +8,7 @@
             <Icon name="lucide:terminal" class="text-white text-xl" />
           </div>
           <span class="text-lg font-bold text-white tracking-tighter">
-            Grafi-k<span class="text-blue-500">Digital</span>
+            Grafi-k <span class="text-blue-500">Digital Web</span>
           </span>
         </div>
 
