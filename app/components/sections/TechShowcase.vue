@@ -1,5 +1,5 @@
 <template>
-  <section class="py-24 bg-slate-950 overflow-hidden">
+  <section id="soluciones" class="py-24 bg-slate-950 overflow-hidden">
     <div class="max-w-5xl mx-auto px-6">
       
       <div class="text-center mb-12">

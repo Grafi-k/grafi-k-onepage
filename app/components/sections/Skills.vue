@@ -1,5 +1,5 @@
 <template>
-  <section class="py-24 bg-slate-950 overflow-hidden">
+  <section id="stack" class="py-24 bg-slate-950 overflow-hidden">
     <div class="container mx-auto px-4 mb-16 text-center">
       <h2 class="text-4xl font-bold text-white mb-4">Ecosistema Tecnológico</h2>
       <p class="text-slate-400 max-w-2xl mx-auto">
@@ -65,7 +65,7 @@ const row2 = [
   { name: 'Gemini', icon: 'logos:google-gemini' },
   { name: 'Claude', icon: 'logos:claude' },
   { name: 'Copilot', icon: 'simple-icons:microsoftcopilot' },
-  { name: 'Java Certification', icon: '/img/certificacion-java.png', isLocal: true },
+  { name: 'Java Certification TecMilenio', icon: '/img/certificacion-java.png', isLocal: true },
   { name: 'Photoshop', icon: 'logos:adobe-photoshop' },
   { name: 'Illustrator', icon: 'logos:adobe-illustrator' },
   { name: 'Premiere', icon: 'logos:adobe-premiere' },

@@ -1,5 +1,5 @@
 <template>
-  <section class="relative h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+  <section id="inicio" class="relative h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
     <GfkMouseTrail />
     <div class="relative z-10">
     <div class="inline-block px-3 py-1 mb-6 text-sm font-medium text-blue-400 bg-blue-900/30 rounded-full border border-blue-500/30">
@@ -19,12 +19,16 @@
     </p>
     
     <div class="flex gap-4 justify-center">
-      <button class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold transition-all transform hover:scale-105">
+      <NuxtLink 
+        to="/cotizar" 
+        class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg shadow-blue-900/40">
         Empezar Proyecto
-      </button>
-      <button class="border border-slate-700 hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold transition-all">
+      </NuxtLink>
+      <a 
+        href="#portafolio" 
+        class="border border-slate-700 hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold transition-all">
         Ver Portafolio
-      </button>
+      </a>
     </div>
     </div>
   </section>

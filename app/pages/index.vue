@@ -1,6 +1,5 @@
 <template>
   <main class="bg-slate-950 min-h-screen selection:bg-blue-500/30 selection:text-blue-200">
-    <Navbar />
     <Hero />
     <Services />
     <Skills /> 

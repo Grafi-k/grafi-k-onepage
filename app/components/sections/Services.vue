@@ -1,6 +1,6 @@
 <template>
   <!-- Usamos el componente envolvente que tiene el gradiente y los caracteres -->
-  <GfkCosmicBackground id="servicios">  
+  <GfkCosmicBackground id="servicios" class="min-h-screen flex items-center justify-center py-20">  
   
     <section class="py-24 px-4 relative">
       <div class="max-w-6xl mx-auto">
