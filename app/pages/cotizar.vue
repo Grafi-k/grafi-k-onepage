@@ -12,7 +12,8 @@ const formData = reactive({
   urgencia: '',
   nombre: '',
   email: '',
-  whatsapp: ''
+  whatsapp: '',
+  origen: 'cotizador' // Identificador
 });
 
 const paquetes = [
@@ -47,12 +48,12 @@ const enviarDatos = async () => {
   if (!puedeAvanzar.value) return;
   enviando.value = true;
   try {
-    // Aquí conectarás tu endpoint /api/cotizar hacia HubSpot
-    console.log('Lead calificado para HubSpot:', formData);
+    await $fetch('/api/cotizar', {
+      method: 'POST',
+      body: formData
+    });
     
-    // Simulación de envío exitoso
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    step.value = totalSteps + 1;
+    step.value = totalSteps + 1; // Muestra la pantalla de éxito
   } catch (e) {
     alert('Hubo un problema enviando tu cotización, intenta de nuevo.');
   } finally {

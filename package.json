@@ -15,8 +15,10 @@
     "vue-router": "^5.0.6"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.118",
     "@nuxt/icon": "^2.2.1",
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@types/node": "^26.1.1",
     "tailwindcss-animated": "^2.0.0"
   }
 }
