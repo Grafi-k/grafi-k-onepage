@@ -8,6 +8,7 @@
     <TechShowcase />
     <Contact />
     <Footer />
+    <WhatsAppButton />
   </main>
 </template>
 

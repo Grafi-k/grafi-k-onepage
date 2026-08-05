@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     console.error('❌ ERROR: HUBSPOT_ACCESS_TOKEN no encontrado en el .env');
     throw createError({
       statusCode: 500,
-      statusMessage: 'Falta configurar el Token en el .env',
+      statusMessage: 'Falta configurar el Token de HubSpot en el .env',
     });
   }
 
@@ -29,17 +29,19 @@ export default defineEventHandler(async (event) => {
   };
 
   // Teléfono (Validación limpia)
-  if (body?.whatsapp && body.whatsapp.trim() !== '') {
-    properties.phone = body.whatsapp.trim();
+  const telefonoCliente = body?.whatsapp?.trim() || '';
+  if (telefonoCliente !== '') {
+    properties.phone = telefonoCliente;
   }
 
-  // 5. Propiedades personalizadas estructuradas (¡Clave para automatizar con el Bot!)
+  // 5. Propiedades personalizadas estructuradas
   if (!esContactoSimple) {
     properties.gfk_tipo_servicio = body?.tipo || 'No especificado';
     properties.gfk_paquete = body?.presupuesto || 'No especificado';
     properties.gfk_urgencia = body?.urgencia || 'No especificado';
   }
 
+  // --- INTENTO 1: ENVIAR A HUBSPOT ---
   try {
     const response = await $fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
       method: 'POST',
@@ -51,8 +53,6 @@ export default defineEventHandler(async (event) => {
     });
 
     console.log('✅ CONTACTO ENVIADO A HUBSPOT CON ÉXITO:', response);
-    return { success: true, data: response };
-
   } catch (error: any) {
     const hubspotErrorDetails = error?.data?.message || error?.message || error;
     console.error('❌ ERROR HUBSPOT API:', hubspotErrorDetails);
@@ -62,4 +62,40 @@ export default defineEventHandler(async (event) => {
       statusMessage: `Error al conectar con HubSpot: ${hubspotErrorDetails}`,
     });
   }
+
+  // --- 6. LA MAGIA NEGRA: Disparar el GFK-Bot por WhatsApp 📱💥 ---
+  // Solo se dispara si el cliente puso un número de teléfono válido
+  if (telefonoCliente !== '') {
+    const whatsappToken = process.env.WHATSAPP_TOKEN || config.whatsappToken;
+    const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID || config.whatsappPhoneId;
+
+    try {
+      const nombreCliente = body?.nombre || 'Crack';
+      const servicioSolicitado = body?.tipo || 'Desarrollo Web';
+
+      await $fetch(`https://graph.facebook.com/v19.0/${phoneId}/messages`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${whatsappToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: {
+          messaging_product: 'whatsapp',
+          to: telefonoCliente,
+          type: 'text',
+          text: {
+            body: `¡Qué tal, ${nombreCliente}! 👋 Te saluda GFK-Bot, el asistente inteligente de Grafi-k Digital Web. Veo que te interesa una cotización de *${servicioSolicitado}*. ¿Le damos forma al proyecto de una vez o tienes alguna duda técnica, crack? 🚀`
+          }
+        }
+      });
+      console.log('✅ GFK-BOT DISPARADO CON ÉXITO A:', telefonoCliente);
+    } catch (whatsappError) {
+      console.error('⚠️ Error enviando WhatsApp automático (el form sí pasó a HubSpot):', whatsappError);
+    }
+  }
+
+  return {
+    success: true,
+    message: 'Cotización registrada en HubSpot y GFK-Bot disparado con éxito'
+  };
 });
