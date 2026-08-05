@@ -19,25 +19,17 @@ export default defineEventHandler(async (event) => {
 
   const mensajeHubSpot = esContactoSimple
     ? `[MENSAJE DIRECTO DE CONTACTO]\n\n• Mensaje: ${body?.detalles || 'Sin mensaje'}`
-    : `[COTIZACIÓN CALIFICADA HIGH-TICKET]\n\n• Brief del cliente: ${body?.brief || 'Sin brief'}`;
+    : `[COTIZACIÓN CALIFICADA HIGH-TICKET]\n\n• Servicio: ${body?.tipo || 'No especificado'}\n• Paquete: ${body?.presupuesto || 'No especificado'}\n• Urgencia: ${body?.urgencia || 'No especificado'}\n• Brief: ${body?.brief || 'Sin brief'}`;
 
-  // 4. Armamos la estructura base para HubSpot
+  // 4. Armamos la estructura para HubSpot
   const properties: Record<string, string> = {
     email: body?.email,
     firstname: body?.nombre || 'Contacto Web',
     message: mensajeHubSpot,
   };
 
-  // Teléfono (Validación limpia)
   if (body?.whatsapp && body.whatsapp.trim() !== '') {
-    properties.phone = body.whatsapp.trim();
-  }
-
-  // 5. Propiedades personalizadas estructuradas (¡Clave para automatizar con el Bot!)
-  if (!esContactoSimple) {
-    properties.gfk_tipo_servicio = body?.tipo || 'No especificado';
-    properties.gfk_paquete = body?.presupuesto || 'No especificado';
-    properties.gfk_urgencia = body?.urgencia || 'No especificado';
+    properties.phone = body.whatsapp;
   }
 
   try {
@@ -54,12 +46,11 @@ export default defineEventHandler(async (event) => {
     return { success: true, data: response };
 
   } catch (error: any) {
-    const hubspotErrorDetails = error?.data?.message || error?.message || error;
-    console.error('❌ ERROR HUBSPOT API:', hubspotErrorDetails);
+    console.error('❌ ERROR HUBSPOT API:', error?.data || error?.message || error);
     
     throw createError({
       statusCode: error?.statusCode || 500,
-      statusMessage: `Error al conectar con HubSpot: ${hubspotErrorDetails}`,
+      statusMessage: error?.data?.message || 'Error al conectar con el CRM de HubSpot',
     });
   }
 });
